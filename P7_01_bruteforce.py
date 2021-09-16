@@ -1,63 +1,57 @@
 import csv
 import itertools
-liste_a = []
-liste_invest = []
-liste_actions = []
-liste_c =[]
-amont_benefice = []
+list_a =[]
+list_i = []
+list_b = []
+list_actions = []
+list_invest = []
+list_benef = []
 max_expense = 500
-amont_invest = 0
-new_liste = []
+list_profit = []
+list_lenght = []
+result = []
 
-
-
-def how_much_invest(liste):
+# addition des sommes investis dans une liste
+def how_much_invest(a_list):
     somme = 0
-    for i in liste:
+    for i in a_list:
         somme = somme + i
     #print(somme)
     return somme
+
+# ouvrir le fichier algoinvest.txt et récupérer les données
 with open('algoinvest.txt',newline='') as f:
     tableau=[]
     lire=csv.reader(f)
     for ligne in lire:
-        a = ligne[1].lstrip("\t")
-        b = ligne[2].rstrip("%").lstrip("\t")
-        liste_c.append(ligne[0])
-        if a.isdigit():
-            a = int(a)
-            b = int(b)
-            amont_benefice = amont_invest + (a*b/100)
-            liste_a.append(a)
-            amont_invest = amont_invest + a
-            #print(amont_invest)
-            #print(amont_benefice)
-            #print(ligne[0])
+        list_a.append(ligne[0])
+        invest = ligne[1].lstrip("\t")
+        benef = ligne[2].rstrip("%").lstrip("\t")
+        if invest.isdigit():
+            invest = int(invest)
+            list_i.append(invest)
+            benef = int(benef)
+            list_b.append(benef)
 
+# former toutes les combinaisons possibles jusqu'à 15 nombres pour toutes les colonnes
 for i in range(1, 16):
-    liste_invest.append(list(itertools.combinations(liste_a, i)))
-    liste_actions.append(list(itertools.combinations(liste_c, i)))
+    list_actions.append(list(itertools.combinations(list_a, i)))
+    list_invest.append(list(itertools.combinations(list_i, i)))
+    list_benef.append(list(itertools.combinations(list_b, i)))
 
-list_lenght = 0
-
+# calcul de la longeur de liste de chaque liste dans la liste de liste
 for i in range(15):
-    list_lenght = list_lenght + len(liste_invest[i])
-    new_liste.append(len(liste_invest[i]))
-    print(len(liste_invest[i]))
-#print(list_lenght)
+    list_lenght.append(len(list_invest[i]))
 
-#print(liste_invest[9][184755])
-#longueur max 16 soit range 17
-
-#print(liste_invest[0][0], "it's me Mario")
-
-#for x, y in zip(range(10), range(new_liste[x])):
- #   if how_much_invest(liste_invest[x][y]) < 500:
-  #      print(liste_invest[x][y])
-
-
+# filtrage des résultats pour les investissements de moins de 500€
 for x in range(15):
-    for y in range(new_liste[x]):
-        if how_much_invest(liste_invest[x][y]) < 500:
-            print(liste_invest[x][y])
-            print(how_much_invest(liste_invest[x][y]))
+    for y in range(list_lenght[x]):
+        if how_much_invest(list_invest[x][y]) < 500:
+            # prix de l'action * pourcentage / 100
+            for invest, benef in zip(list_invest[x][y], list_benef[x][y]):
+                result.append(invest * benef / 100)
+            list_profit.append(how_much_invest(result))
+            result.clear()
+
+            # récupération du max du bénef
+print(max(list_profit))
