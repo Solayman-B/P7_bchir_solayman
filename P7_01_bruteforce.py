@@ -10,6 +10,7 @@ max_expense = 500
 list_profit = []
 list_lenght = []
 result = []
+best_invest = []
 
 # addition des sommes investis dans une liste
 def how_much_invest(a_list):
@@ -44,14 +45,22 @@ for i in range(15):
     list_lenght.append(len(list_invest[i]))
 
 # filtrage des résultats pour les investissements de moins de 500€
-for x in range(15):
-    for y in range(list_lenght[x]):
-        if how_much_invest(list_invest[x][y]) < 500:
-            # prix de l'action * pourcentage / 100
-            for invest, benef in zip(list_invest[x][y], list_benef[x][y]):
-                result.append(invest * benef / 100)
-            list_profit.append(how_much_invest(result))
-            result.clear()
+def filter_results(best_result = 999):
+    for x in range(15):
+        for y in range(list_lenght[x]):
+            if how_much_invest(list_invest[x][y]) < 500:
+                # prix de l'action * pourcentage / 100
+                for invest, benef in zip(list_invest[x][y], list_benef[x][y]):
+                    result.append(invest * benef / 100)
+                list_profit.append(how_much_invest(result))
+                if how_much_invest(result) >= int(best_result):
+                    print("liste des actions ", list_invest[x][y], "liste des pourcentages ", list_benef[x][y], "le résultat ", best_result)
+                result.clear()
 
-            # récupération du max du bénef
-print(max(list_profit))
+filter_results()
+# récupération du max du bénef
+filter_results(max(list_profit))
+
+
+#print(list_invest[9][167576])
+#print(list_benef[9][167576])
