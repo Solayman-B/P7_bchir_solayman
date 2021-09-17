@@ -1,6 +1,6 @@
 import csv
 import itertools
-list_a =[]
+list_a = []
 list_i = []
 list_b = []
 list_actions = []
@@ -60,7 +60,3 @@ def filter_results(best_result = 999):
 filter_results()
 # récupération du max du bénef
 filter_results(max(list_profit))
-
-
-#print(list_invest[9][167576])
-#print(list_benef[9][167576])
