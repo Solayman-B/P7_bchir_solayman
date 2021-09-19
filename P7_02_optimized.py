@@ -3,14 +3,18 @@ import itertools
 
 list_a = []
 list_i = []
+list_i_2 = []
 optimised_list_i = []
 list_b = []
+list_b_2 = []
 optimised_list_b = []
 list_actions = []
 list_invest = []
 list_benef = []
 max_expense = 500.0
 expense = 0.0
+new_expense = 0.0
+new_expense_percent = 0.0
 index = float
 list_profit = []
 list_lenght = []
@@ -54,23 +58,30 @@ while expense < max_expense:
 	else:
 		break
 
+
 # tenter d'améliorer le résultat obtenu
+
+# while min prix action <= max_expense - expense fonction optimise
 for i, b in zip(list_i, list_b):
-	if i > (max_expense - expense):
-		list_to_del.append(index)
+	if i <= (max_expense - expense):
+		benef = i * b / 100
+		optimised_benefit.append(benef)
+		if benef == max(optimised_benefit):
+			print("i", i)
+			new_expense = i
+			new_expense_percent = b
+expense += new_expense
+profit += max(optimised_benefit)
+print("investi ", new_expense, "pourcent ", new_expense_percent, "gain ", max(optimised_benefit))
 
-for i in list_to_del:
-	del list_i[i]
-	del list_b[i]
-	optimised_benefit.append(list_i[i] * list_b[i] / 100)
+optimised_benefit.clear()
 
-print(max(optimised_benefit))
 
-		#optimised_list_i.append(i)
-		#optimised_list_b.append(b)
-		#index = list_b.index(max(list_b))
-		#list_invest.append(list_i.pop(index))
-		#expense = how_much_invest(list_invest)
-		#list_benef.append(list_b.pop(index))
-		#profit = how_much_invest(list_benef)
+# optimised_list_i.append(i)
+# optimised_list_b.append(b)
+# index = list_b.index(max(list_b))
+# list_invest.append(list_i.pop(index))
+# expense = how_much_invest(list_invest)
+# list_benef.append(list_b.pop(index))
+# profit = how_much_invest(list_benef)
 print("list_invest ", list_invest, "list_benef ", list_benef, "expense ", expense, "profit ", profit)
