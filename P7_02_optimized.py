@@ -1,43 +1,67 @@
 import csv
 import itertools
 
-list_a = []
-list_i = []
-list_i_2 = []
-optimised_list_i = []
-list_b = []
-list_b_2 = []
-optimised_list_b = []
-list_actions = []
-list_invest = []
-list_benef = []
-max_expense = 500.0
-expense = 0.0
-new_expense = 0.0
-new_expense_percent = 0.0
-index = float
-list_profit = []
-list_lenght = []
-result = []
-best_invest = []
-list_to_del = []
-optimised_benefit = []
-
 # ouvrir le fichier algoinvest.txt et récupérer les données
 with open('algoinvest.txt', newline='') as f:
-	tableau = []
-	lire = csv.reader(f)
-	for ligne in lire:
-		list_a.append(ligne[0])
-		invest = ligne[1].lstrip("\t")
-		benef = ligne[2].rstrip("%").lstrip("\t")
-		if invest.isdigit():
-			invest = int(invest)
-			list_i.append(invest)
-			benef = int(benef)
-			list_b.append(benef)
+	read = csv.reader(f)
+	liste_action = []
+	liste_invessment = []
+	liste_benefit = []
+
+	for line in read:
+		if line[1].lstrip("\t").isdigit() and line[2].rstrip("%").lstrip("\t").isdigit():
+			liste_action.append(line[0])
+			liste_invessment.append(int(line[1].lstrip("\t")))
+			liste_benefit.append(int(line[2].rstrip("%").lstrip("\t")))
+
+	sorted_liste_benefit = sorted(liste_benefit, reverse = True)
+	expense = 0
+	max_expense = 500
+	liste_bought_actions = []
+	total_profit = 0
+
+	def optimise_it(sorted_liste_benefit, max_expense, expense, liste_invessment, liste_bought_actions, total_profit, liste_benefit):
+		for i in sorted_liste_benefit:
+			if max_expense - expense >= liste_invessment[i]:
+				#del sorted_liste_benefit[i]
+				expense += liste_invessment[i]
+				liste_bought_actions.append(liste_action[i])
+				total_profit += liste_invessment[i] * liste_benefit[i] / 100
+				print("expense", expense, "total_profit", total_profit)
+
+	while expense < max_expense:
+		index = liste_benefit.index(sorted_liste_benefit.pop(0))
+		if expense + liste_invessment[index] <= max_expense:
+			expense += liste_invessment[index]
+			liste_bought_actions.append(liste_action[index])
+			total_profit += liste_invessment[index] * liste_benefit[index] / 100
+			print("expense", expense, "total_profit", total_profit)
+		else:
+			print("expense", expense, "total_profit", total_profit)
+			optimise_it(sorted_liste_benefit, max_expense, expense, liste_invessment, liste_bought_actions, total_profit, liste_benefit)
+			break
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
 # addition des sommes investis dans une liste
 def how_much_invest(a_list):
 	somme = 0
@@ -85,3 +109,4 @@ optimised_benefit.clear()
 # list_benef.append(list_b.pop(index))
 # profit = how_much_invest(list_benef)
 print("list_invest ", list_invest, "list_benef ", list_benef, "expense ", expense, "profit ", profit)
+"""
