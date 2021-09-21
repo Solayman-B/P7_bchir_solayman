@@ -1,12 +1,10 @@
 import csv
 import itertools
-list_a = []
-list_i = []
-list_b = []
+
 list_actions = []
 list_invest = []
 list_benef = []
-max_expense = 500
+
 list_profit = []
 list_lenght = []
 result = []
@@ -22,23 +20,25 @@ def how_much_invest(a_list):
 
 # ouvrir le fichier algoinvest.txt et récupérer les données
 with open('algoinvest.txt',newline='') as f:
-    tableau=[]
-    lire=csv.reader(f)
-    for ligne in lire:
-        list_a.append(ligne[0])
-        invest = ligne[1].lstrip("\t")
-        benef = ligne[2].rstrip("%").lstrip("\t")
-        if invest.isdigit():
-            invest = int(invest)
-            list_i.append(invest)
-            benef = int(benef)
-            list_b.append(benef)
+    liste_action = []
+    liste_invessment = []
+    liste_benefit = []
+    liste_tuples = []
+    max_expense = 500
+    read = csv.reader(f)
+    for line in read:
+        if line[1].lstrip("\t").isdigit() and int(line[1].lstrip("\t")) <= max_expense:
+            liste_action.append(line[0])
+            liste_invessment.append(int(line[1].lstrip("\t")))
+            liste_benefit.append(int(line[2].rstrip("%").lstrip("\t")))
+    print(liste_tuples)
 
 # former toutes les combinaisons possibles jusqu'à 15 nombres pour toutes les colonnes
 for i in range(1, 16):
-    list_actions.append(list(itertools.combinations(list_a, i)))
-    list_invest.append(list(itertools.combinations(list_i, i)))
-    list_benef.append(list(itertools.combinations(list_b, i)))
+
+    list_actions.append(list(itertools.combinations(liste_action, i)))
+    list_invest.append(list(itertools.combinations(liste_invessment, i)))
+    list_benef.append(list(itertools.combinations(liste_benefit, i)))
 
 # calcul de la longeur de liste de chaque liste dans la liste de liste
 for i in range(15):
